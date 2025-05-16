@@ -1,0 +1,89 @@
+class range
+{
+private:
+	int* _begin;
+	int* _end;
+	int _step;
+public:
+	class iterator
+	{
+	private:
+		int* ptr;
+		int step;
+	public:
+		iterator(int* p, int _step) { this->ptr = p; this->step = _step; }
+
+		int operator*() const { return *ptr; }
+		iterator& operator++() { *ptr += step ; return *this; }
+		int getValue() const { return *this->ptr; }
+		bool operator!= (const iterator& other) const { return (step > 0 ? this->getValue() < other.getValue() : this->getValue() > other.getValue()); }
+	};
+	range(int __begin, int __end,unsigned int __step = 1)
+	{
+		this->_begin = new int;
+		this->_end = new int;
+		*this->_begin = __begin;
+		*this->_end = __end;
+		this->_step = (__end > __begin ? (int)__step : -(int)__step);
+	}
+	iterator begin()
+	{
+		return iterator(this->_begin, this->_step);
+	}
+	iterator end()
+	{
+		return iterator(this->_end, this->_step);
+	}
+	~range()
+	{
+		delete this->_begin;
+		delete this->_end;
+	}
+	range operator=(range&) = delete;
+	range(range&) = delete;
+};
+
+class range_float
+{
+private:
+	double* _begin;
+	double* _end;
+	double _step;
+public:
+	class iterator
+	{
+	private:
+		double* ptr;
+		double step;
+	public:
+		iterator(double* p, double _step) { this->ptr = p; this->step = _step; }
+		double operator*() const { return *ptr; }
+		iterator& operator++() { *ptr += step; return *this; }
+		double getValue() const { return *this->ptr; }
+		bool operator!= (const iterator& other) const { return (step > 0 ? this->getValue() < other.getValue() : this->getValue() > other.getValue()); }
+	};
+	range_float(double __begin, double __end, double __step = 1.0)
+	{
+		this->_begin = new double;
+		this->_end = new double;
+		*this->_begin = __begin;
+		*this->_end = __end;
+		__step = (__step > 0 ? __step : -__step);
+		this->_step = (__end > __begin ? __step : -__step);
+	}
+	iterator begin()
+	{
+		return iterator(this->_begin, this->_step);
+	}
+	iterator end()
+	{
+		return iterator(this->_end, this->_step);
+	}
+	~range_float()
+	{
+		delete this->_begin;
+		delete this->_end;
+	}
+	range_float operator=(range_float&) = delete;
+	range_float(range_float&) = delete;
+};
